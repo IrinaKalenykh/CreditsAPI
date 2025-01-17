@@ -12,6 +12,7 @@ API has two endpoints
 
 
 ## DataBase structure
+```mermaid
 erDiagram
     Credits ||--o{ Credits : places
     Credits {
@@ -29,6 +30,7 @@ erDiagram
         REAL InvoiceAmount
         INTEGER CreditId FK
     }
+```
 
     
 ## Technologies
