@@ -19,14 +19,14 @@ erDiagram
         INTEGER CreditId PK
         TEXT CreditNumber
         TEXT ClientName
-        REAL RequestedAmount
+        INTEGER RequestedAmount "Values in smallest currency unit"
         TEXT CreditRequestDate
         INTEGER CreditStatus "Only 1, 2, 3 values are allowed"
     }
     Invoices {
         INTEGER InvoiceId
         TEXT InvoiceNumber
-        REAL InvoiceAmount
+        INTEGER InvoiceAmount "Values in smallest currency unit"
         INTEGER CreditId FK
     }
 ```
