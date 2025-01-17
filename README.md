@@ -24,7 +24,7 @@ erDiagram
         INTEGER CreditStatus "Only 1, 2, 3 values are allowed"
     }
     Invoices {
-        INTEGER InvoiceId
+        INTEGER InvoiceId PK
         TEXT InvoiceNumber
         INTEGER InvoiceAmount "Values in smallest currency unit"
         INTEGER CreditId FK
