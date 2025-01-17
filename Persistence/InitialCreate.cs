@@ -18,7 +18,7 @@ public class InitialCreate
                 CreditId INTEGER PRIMARY KEY AUTOINCREMENT,
                 CreditNumber TEXT NOT NULL,
                 ClientName TEXT NOT NULL,
-                RequestedAmount REAL NOT NULL DEFAULT 0,
+                RequestedAmount INTEGER NOT NULL DEFAULT 0,
                 CreditRequestDate TEXT NOT NULL DEFAULT (datetime('now')),
                 CreditStatus INTEGER NOT NULL DEFAULT 3 CHECK (CreditStatus IN (1, 2, 3))
             )";
@@ -28,7 +28,7 @@ public class InitialCreate
             CREATE TABLE IF NOT EXISTS Invoices (
                 InvoiceId INTEGER PRIMARY KEY AUTOINCREMENT,
                 InvoiceNumber TEXT NOT NULL,
-                InvoiceAmount REAL NOT NULL DEFAULT 0,
+                InvoiceAmount INTEGER NOT NULL DEFAULT 0,
                 CreditId INTEGER NOT NULL,
                 FOREIGN KEY (CreditId) REFERENCES Credits(CreditId) ON DELETE CASCADE
             )";

@@ -14,7 +14,7 @@ API has two endpoints
 ## DataBase structure
 ```mermaid
 erDiagram
-    Credits ||--o{ Invoices : one to many
+    Credits ||--o{ Invoices : contains
     Credits {
         INTEGER CreditId PK
         TEXT CreditNumber

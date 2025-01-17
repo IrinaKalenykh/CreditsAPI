@@ -9,7 +9,19 @@ public class CreditsService : ICreditsService
 
     public async Task<List<Credit>> GetCreditListAsync()
     {
-        return await _creditsRepository.GetListAsync();
+        var credits = await _creditsRepository.GetListAsync();
+
+        credits.ForEach(credit => 
+        {
+                credit.RequestedAmount = CurrencyHelper.ToStandartUnit(credit.RequestedAmount);
+
+                foreach(var invoice in credit.Invoices)
+                {
+                    invoice.InvoiceAmount = CurrencyHelper.ToStandartUnit(invoice.InvoiceAmount);
+                }
+        });
+
+        return credits;
     }
 
     public async Task<CreditStatistics> GetCreditStatisticsAsync()
