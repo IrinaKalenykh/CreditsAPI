@@ -5,11 +5,32 @@ This is a C# API built using ASP.NET Core 8.0. The API provides endpoints for ma
 
 ## Features
 API has two endpoints
-- [Feature 1]: GET http://localhost:5000/api/credits - returns a list of credits with a list of invoices for each credit.
-- [Feature 2]: GET http://localhost:5000/api/credits/statistics - returns the total sum of credits with the "Paid" status, the total
+- GET http://localhost:5000/api/credits - returns a list of credits with a list of invoices for each credit.
+- GET http://localhost:5000/api/credits/statistics - returns the total sum of credits with the "Paid" status, the total
                sum of credits with the "AwaitingPayment" status, and the percentage of each of these amounts in relation to the total 
                sum of all credits with the statuses "Paid" and "AwaitingPayment".
 
+
+## DataBase structure
+erDiagram
+    Credits ||--o{ Credits : places
+    Credits {
+        INTEGER CreditId PK
+        TEXT CreditNumber
+        TEXT ClientName
+        REAL RequestedAmount
+        TEXT CreditRequestDate
+        INTEGER CreditStatus "Only 1, 2, 3 values are allowed"
+    }
+    Invoices ||--|{ LINE-ITEM : contains
+    Invoices {
+        INTEGER InvoiceId
+        TEXT InvoiceNumber
+        REAL InvoiceAmount
+        INTEGER CreditId FK
+    }
+
+    
 ## Technologies
 - ASP.NET Core
 - Dapper

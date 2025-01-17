@@ -20,7 +20,7 @@ public class InitialCreate
                 ClientName TEXT NOT NULL,
                 RequestedAmount REAL NOT NULL DEFAULT 0,
                 CreditRequestDate TEXT NOT NULL DEFAULT (datetime('now')),
-                CreditStatus INT NOT NULL DEFAULT 3 CHECK (CreditStatus IN (1, 2, 3))
+                CreditStatus INTEGER NOT NULL DEFAULT 3 CHECK (CreditStatus IN (1, 2, 3))
             )";
         await dbConnection.ExecuteAsync(createCreditsTableQuery);
 
