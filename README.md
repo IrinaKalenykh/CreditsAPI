@@ -14,7 +14,7 @@ API has two endpoints
 ## DataBase structure
 ```mermaid
 erDiagram
-    Credits ||--o{ Credits : places
+    Credits ||--o{ Invoices : one to many
     Credits {
         INTEGER CreditId PK
         TEXT CreditNumber
@@ -23,7 +23,7 @@ erDiagram
         TEXT CreditRequestDate
         INTEGER CreditStatus "Only 1, 2, 3 values are allowed"
     }
-    Invoices ||--|{ LINE-ITEM : contains
+    Invoices ||--|{
     Invoices {
         INTEGER InvoiceId
         TEXT InvoiceNumber
