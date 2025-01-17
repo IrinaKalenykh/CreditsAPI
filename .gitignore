@@ -1,0 +1,15 @@
+# Ignore bin and obj folders
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+
+# Ignore published files
+*.publishsettings
+*.pfx
+
+# Ignore Visual Studio settings
+.vscode/
+.vs/
