@@ -26,20 +26,23 @@ public class CreditsService : ICreditsService
 
     public async Task<CreditStatistics> GetCreditStatisticsAsync()
     {
-        var statistic = await _creditsRepository.GetStatisticsAsync();
+        var statistics = await _creditsRepository.GetStatisticsAsync();
 
-        if (statistic != null)
+        if (statistics != null)
         {
-            var totalAmount = statistic.TotalPaid + statistic.TotalAwaitingPayment;
+            statistics.TotalPaid = CurrencyHelper.ToStandartUnit(statistics.TotalPaid);
+            statistics.TotalAwaitingPayment = CurrencyHelper.ToStandartUnit(statistics.TotalAwaitingPayment);
+
+            var totalAmount = statistics.TotalPaid + statistics.TotalAwaitingPayment;
             
             if (totalAmount != 0)
             {
-                statistic.PercentagePaidToTotal = Math.Round(statistic.TotalPaid/totalAmount * 100);
-                statistic.PercentageAwaitingPaymentToTotal = Math.Round(
-                    statistic.TotalAwaitingPayment/totalAmount * 100);
+                statistics.PercentagePaidToTotal = Math.Round(statistics.TotalPaid/totalAmount * 100);
+                statistics.PercentageAwaitingPaymentToTotal = Math.Round(
+                    statistics.TotalAwaitingPayment/totalAmount * 100);
             }
         }
 
-        return statistic;
+        return statistics;
     }
 }
