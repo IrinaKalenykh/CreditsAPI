@@ -44,6 +44,28 @@ public class CreditsServiceTests
     }
 
     [Test]
+    public async Task GetCreditsListAsync_RequestedAmountWithDigits_ShouldReturnDecimalDigits()
+    {
+        var testCredits = CreateCreditsForTest();
+
+        testCredits[0].RequestedAmount = 10754;
+
+        _creditsRepositoryMock.Setup(repository => repository.GetListAsync())
+            .ReturnsAsync(testCredits);
+
+        var result = await _creditsService.GetCreditListAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Count, Is.EqualTo(5));
+        Assert.That(result, Is.EqualTo(testCredits));
+
+        var firstCredit = result[0];
+        var decimalPart = firstCredit.RequestedAmount - Math.Round(firstCredit.RequestedAmount);
+        Assert.That(decimalPart, Is.Not.EqualTo(0));
+    }
+    
+
+    [Test]
     public async Task GetCreditStatisticAsync_TotalAmoutIsZero_ShouldReturnZeroPercentage()
     {
         var totalPaid = 0m;
@@ -73,15 +95,10 @@ public class CreditsServiceTests
     [Test]
     public async Task GetCreditStatisticAsync_TotalAmoutIsNotZero_ShouldReturnCorrectPercentage()
     {
-        var totalPaid = 3000m;
-        var totalAwaitingPayment = 2000m;
-        var testPercentagePaid = 60m;
-        var testPercentageAwaitingPayment = 40m;
-
         var testStatistic = new CreditStatistics 
         {
-            TotalPaid = totalPaid,
-            TotalAwaitingPayment = totalAwaitingPayment
+            TotalPaid = 300000,
+            TotalAwaitingPayment = 200000
         };
 
         _creditsRepositoryMock.Setup(repository => repository.GetStatisticsAsync())
@@ -90,11 +107,35 @@ public class CreditsServiceTests
         var result = await _creditsService.GetCreditStatisticsAsync();
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result.TotalPaid, Is.EqualTo(totalPaid));
-        Assert.That(result.TotalAwaitingPayment, Is.EqualTo(totalAwaitingPayment));
-        Assert.That(result.PercentagePaidToTotal, Is.EqualTo(testPercentagePaid));
-        Assert.That(result.PercentageAwaitingPaymentToTotal, Is.EqualTo(testPercentageAwaitingPayment));
+        Assert.That(result.TotalPaid, Is.EqualTo(3000));
+        Assert.That(result.TotalAwaitingPayment, Is.EqualTo(2000));
+        Assert.That(result.PercentagePaidToTotal, Is.EqualTo(60));
+        Assert.That(result.PercentageAwaitingPaymentToTotal, Is.EqualTo(40));
     }
+
+    [Test]
+    public async Task GetCreditStatisticAsync_WithDigits_ShouldConvertCurrency()
+    {
+        var testStatistic = new CreditStatistics 
+        {
+            TotalPaid = 1000423,
+            TotalAwaitingPayment = 200856
+        };
+
+        _creditsRepositoryMock.Setup(repository => repository.GetStatisticsAsync())
+            .ReturnsAsync(testStatistic);
+
+        var result = await _creditsService.GetCreditStatisticsAsync();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.TotalPaid, Is.EqualTo(10004.23));
+        Assert.That(result.TotalAwaitingPayment, Is.EqualTo(2008.56));
+        Assert.That(result.PercentagePaidToTotal, Is.EqualTo(83));
+        Assert.That(result.PercentageAwaitingPaymentToTotal, Is.EqualTo(17));
+        Assert.That(result.TotalPaid - Math.Round(result.TotalPaid), Is.Not.EqualTo(0));
+        Assert.That(result.TotalAwaitingPayment - Math.Round(result.TotalAwaitingPayment), Is.Not.EqualTo(0));
+    }
+
 
     private List<Credit> CreateCreditsForTest()
     {
