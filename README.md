@@ -23,7 +23,6 @@ erDiagram
         TEXT CreditRequestDate
         INTEGER CreditStatus "Only 1, 2, 3 values are allowed"
     }
-    Invoices ||--|{
     Invoices {
         INTEGER InvoiceId
         TEXT InvoiceNumber
